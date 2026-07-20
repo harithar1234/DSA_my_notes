@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lecture 5 - Recursion Basics</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.55;
+      margin: 0;
+      background: #f6f8fb;
+      color: #1f2937;
+    }
+    main {
+      max-width: 920px;
+      margin: 32px auto;
+      padding: 32px;
+      background: #ffffff;
+      border-radius: 14px;
+      box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
+    }
+    h1 {
+      color: #111827;
+      border-bottom: 3px solid #2563eb;
+      padding-bottom: 10px;
+    }
+    h2 {
+      margin-top: 34px;
+      color: #1d4ed8;
+    }
+    h3 {
+      margin-top: 22px;
+      color: #374151;
+    }
+    pre {
+      background: #0f172a;
+      color: #e5e7eb;
+      padding: 14px 16px;
+      border-radius: 10px;
+      overflow-x: auto;
+    }
+    code {
+      font-family: Consolas, "Courier New", monospace;
+    }
+    :not(pre) > code {
+      background: #eef2ff;
+      color: #1e3a8a;
+      padding: 2px 5px;
+      border-radius: 5px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0 22px;
+      font-size: 0.96rem;
+    }
+    th, td {
+      border: 1px solid #d1d5db;
+      padding: 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: #eff6ff;
+      color: #1e40af;
+    }
+    .intro {
+      background: #eff6ff;
+      border-left: 5px solid #2563eb;
+      padding: 14px 16px;
+      border-radius: 8px;
+    }
+    .notes {
+      background: #f9fafb;
+      border-left: 4px solid #9ca3af;
+      padding: 10px 16px;
+      border-radius: 8px;
+      margin: 16px 0;
+    }
+    .important {
+      background: #fff7ed;
+      border-left: 5px solid #f97316;
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin: 16px 0;
+    }
+    @media print {
+      body { background: #ffffff; }
+      main { box-shadow: none; margin: 0; max-width: none; }
+      h2 { break-after: avoid; }
+      pre, table { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Lecture 5 Final Takeaways: Recursion Basics</h1>
+  <p class="intro">This lecture introduces recursion theory: what recursion is, why infinite recursion causes stack overflow, what a base condition is, and how recursion calls are represented using a recursion tree.</p>
+
+  <h2>1. What Is Recursion?</h2>
+  <p>Recursion means:</p>
+  <pre><code>When a function calls itself.</code></pre>
+  <p>Example idea:</p>
+  <pre><code>void f() {
+    f();
+}</code></pre>
+  <p>Here, function <code>f()</code> is calling itself again and again.</p>
+
+  <h2>2. Infinite Recursion</h2>
+  <p>If a recursive function has no stopping condition, it keeps calling itself forever.</p>
+  <pre><code>void print() {
+    cout &lt;&lt; 1 &lt;&lt; endl;
+    print();
+}
+
+int main() {
+    print();
+    return 0;
+}</code></pre>
+  <p>Output:</p>
+  <pre><code>1
+1
+1
+1
+1
+...</code></pre>
+  <div class="important">
+    <p><strong>Final Point:</strong> If recursion has no stopping condition, it becomes infinite recursion.</p>
+  </div>
+
+  <h2>3. Stack Overflow</h2>
+  <p>Every function call waits in memory until it finishes. In recursion, if a function keeps calling itself, many unfinished function calls keep piling up in stack memory.</p>
+  <p>Example flow:</p>
+  <pre><code>main() calls print()
+print() calls print()
+print() calls print()
+print() calls print()
+...</code></pre>
+  <p>Since none of these calls finish, stack memory fills up.</p>
+  <div class="notes">
+    <p><strong>Final Point:</strong> Too many pending recursive calls cause stack overflow.</p>
+    <p>In C++, this often appears as <code>Segmentation fault</code>.</p>
+  </div>
+
+  <h2>4. Base Condition</h2>
+  <p>A <strong>base condition</strong> is the stopping condition of recursion.</p>
+  <h3>Without Base Condition</h3>
+  <pre><code>void f() {
+    cout &lt;&lt; 1 &lt;&lt; endl;
+    f();
+}</code></pre>
+  <h3>With Base Condition</h3>
+  <pre><code>int cnt = 0;
+
+void f() {
+    if (cnt == 3) {
+        return;
+    }
+
+    cout &lt;&lt; cnt &lt;&lt; endl;
+    cnt++;
+    f();
+}</code></pre>
+  <p>Main function:</p>
+  <pre><code>int main() {
+    f();
+    return 0;
+}</code></pre>
+  <p>Output:</p>
+  <pre><code>0
+1
+2</code></pre>
+  <p>Dry run:</p>
+  <pre><code>cnt = 0 -&gt; print 0 -&gt; cnt becomes 1
+cnt = 1 -&gt; print 1 -&gt; cnt becomes 2
+cnt = 2 -&gt; print 2 -&gt; cnt becomes 3
+cnt = 3 -&gt; base condition true -&gt; return</code></pre>
+  <div class="important">
+    <p><strong>Final Point:</strong> Base condition stops recursion and prevents stack overflow.</p>
+  </div>
+
+  <h2>5. What Does return Do?</h2>
+  <p>Inside a function, <code>return</code> immediately stops that function.</p>
+  <pre><code>if (cnt == 3) {
+    return;
+}</code></pre>
+  <p>When <code>cnt == 3</code>, the function stops and does not execute the lines below:</p>
+  <pre><code>cout &lt;&lt; cnt &lt;&lt; endl;
+cnt++;
+f();</code></pre>
+
+  <h2>6. Recursion Call Flow</h2>
+  <p>For this code:</p>
+  <pre><code>int cnt = 0;
+
+void f() {
+    if (cnt == 3) {
+        return;
+    }
+
+    cout &lt;&lt; cnt &lt;&lt; endl;
+    cnt++;
+    f();
+}</code></pre>
+  <p>Call flow:</p>
+  <pre><code>f() -&gt; cnt = 0 -&gt; print 0 -&gt; call f()
+f() -&gt; cnt = 1 -&gt; print 1 -&gt; call f()
+f() -&gt; cnt = 2 -&gt; print 2 -&gt; call f()
+f() -&gt; cnt = 3 -&gt; return</code></pre>
+  <p>Then control goes back:</p>
+  <pre><code>return to previous f()
+return to previous f()
+return to previous f()
+return to main()</code></pre>
+
+  <h2>7. Recursion Tree</h2>
+  <p>A recursion tree is a simple diagram showing recursive function calls.</p>
+  <p>For the above function:</p>
+  <pre><code>f()
+ |
+ f()
+ |
+ f()
+ |
+ f()
+ |
+return</code></pre>
+  <p>Meaning:</p>
+  <pre><code>First f() calls another f()
+That f() calls another f()
+That f() calls another f()
+Then base condition is met and recursion stops</code></pre>
+
+  <h2>Final Things To Know</h2>
+  <table>
+    <thead>
+      <tr><th>Topic</th><th>Final Takeaway</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Recursion</td><td>A function calling itself.</td></tr>
+      <tr><td>Infinite Recursion</td><td>Recursion without a stopping condition.</td></tr>
+      <tr><td>Base Condition</td><td>The condition that stops recursion.</td></tr>
+      <tr><td>Stack Space</td><td>Memory where unfinished function calls wait.</td></tr>
+      <tr><td>Stack Overflow</td><td>Happens when too many recursive calls pile up.</td></tr>
+      <tr><td><code>return</code></td><td>Stops the current function immediately.</td></tr>
+      <tr><td>Recursion Tree</td><td>Diagrammatic representation of recursive calls.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Most Important Recursion Structure</h2>
+  <pre><code>void f() {
+    if (base_condition) {
+        return;
+    }
+
+    // work
+
+    f();
+}</code></pre>
+  <div class="important">
+    <p><strong>Final Statement:</strong> Every recursive function must have a base condition. Without a base condition, recursion becomes infinite and causes stack overflow.</p>
+  </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lecture 2 - Time and Space Complexity</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.55;
+      margin: 0;
+      background: #f6f8fb;
+      color: #1f2937;
+    }
+    main {
+      max-width: 920px;
+      margin: 32px auto;
+      padding: 32px;
+      background: #ffffff;
+      border-radius: 14px;
+      box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
+    }
+    h1 {
+      color: #111827;
+      border-bottom: 3px solid #2563eb;
+      padding-bottom: 10px;
+    }
+    h2 {
+      margin-top: 34px;
+      color: #1d4ed8;
+    }
+    h3 {
+      margin-top: 22px;
+      color: #374151;
+    }
+    pre {
+      background: #0f172a;
+      color: #e5e7eb;
+      padding: 14px 16px;
+      border-radius: 10px;
+      overflow-x: auto;
+    }
+    code {
+      font-family: Consolas, "Courier New", monospace;
+    }
+    :not(pre) > code {
+      background: #eef2ff;
+      color: #1e3a8a;
+      padding: 2px 5px;
+      border-radius: 5px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0 22px;
+      font-size: 0.96rem;
+    }
+    th, td {
+      border: 1px solid #d1d5db;
+      padding: 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: #eff6ff;
+      color: #1e40af;
+    }
+    .intro {
+      background: #eff6ff;
+      border-left: 5px solid #2563eb;
+      padding: 14px 16px;
+      border-radius: 8px;
+    }
+    .notes {
+      background: #f9fafb;
+      border-left: 4px solid #9ca3af;
+      padding: 10px 16px;
+      border-radius: 8px;
+      margin: 16px 0;
+    }
+    .important {
+      background: #fff7ed;
+      border-left: 5px solid #f97316;
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin: 16px 0;
+    }
+    @media print {
+      body { background: #ffffff; }
+      main { box-shadow: none; margin: 0; max-width: none; }
+      h2 { break-after: avoid; }
+      pre, table { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Lecture 2: Time Complexity and Space Complexity</h1>
+  <p class="intro">This is a concise interview cheat sheet for Lecture 2 of Striver's A2Z DSA Course. It covers the final concepts, formulas, examples, and code needed before solving DSA problems.</p>
+
+  <h2>1. What is Time Complexity?</h2>
+  <div class="important">
+    <p><strong>Time complexity is not the actual execution time.</strong></p>
+  </div>
+  <p>The same code can take different times on different machines.</p>
+  <table>
+    <thead>
+      <tr><th>Machine</th><th>Time Taken</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Old Windows PC</td><td>2 sec</td></tr>
+      <tr><td>New MacBook</td><td>1 sec</td></tr>
+    </tbody>
+  </table>
+  <div class="notes">
+    <p><strong>Time Complexity = rate at which execution time grows with input size N, not actual seconds.</strong></p>
+  </div>
+
+  <h2>2. Big-O Notation</h2>
+  <p>Time complexity is represented as:</p>
+  <pre><code>O(...)</code></pre>
+  <p>Examples:</p>
+  <pre><code>O(1)
+O(log N)
+O(N)
+O(N log N)
+O(N^2)</code></pre>
+  <p>Interviewers expect the answer in <strong>Big-O notation</strong>, not in seconds.</p>
+
+  <h2>3. How to Compute Time Complexity?</h2>
+  <h3>Single Loop</h3>
+  <pre><code>for (int i = 1; i &lt;= N; i++)
+{
+    cout &lt;&lt; "Hello";
+}</code></pre>
+  <p>This loop runs <code>N</code> times.</p>
+  <pre><code>Time Complexity = O(N)</code></pre>
+
+  <h3>Nested Loop</h3>
+  <pre><code>for (int i = 0; i &lt; N; i++)
+{
+    for (int j = 0; j &lt; N; j++)
+    {
+        cout &lt;&lt; "Hello";
+    }
+}</code></pre>
+  <p>Outer loop runs <code>N</code> times and inner loop runs <code>N</code> times.</p>
+  <pre><code>Total = N x N
+Time Complexity = O(N^2)</code></pre>
+
+  <h2>4. Three Rules to Compute Time Complexity</h2>
+  <h3>Rule 1: Always Compute Worst Case</h3>
+  <pre><code>Worst Case</code></pre>
+  <p>Do not focus only on best case. The system should work for the largest possible input.</p>
+
+  <h3>Rule 2: Ignore Constants</h3>
+  <pre><code>O(3N)  -&gt; O(N)
+O(10N) -&gt; O(N)</code></pre>
+  <p>Constants do not matter for very large values of <code>N</code>.</p>
+
+  <h3>Rule 3: Ignore Lower Order Terms</h3>
+  <pre><code>O(N^2 + N + 100) -&gt; O(N^2)</code></pre>
+  <p>For large inputs, <code>N^2</code> dominates <code>N</code> and constants.</p>
+
+  <h2>5. Best, Average, Worst Case</h2>
+  <pre><code>if (marks &lt; 25)
+    Grade D;
+else if (marks &lt; 45)
+    Grade C;
+else if (marks &lt; 65)
+    Grade B;
+else
+    Grade A;</code></pre>
+  <h3>Best Case</h3>
+  <p>Input:</p>
+  <pre><code>marks = 10</code></pre>
+  <p>Only the first condition executes.</p>
+  <pre><code>O(1)</code></pre>
+  <h3>Worst Case</h3>
+  <p>Input:</p>
+  <pre><code>marks = 70</code></pre>
+  <p>Every condition is checked, but the number of checks is still constant.</p>
+  <pre><code>O(1)</code></pre>
+  <div class="notes">
+    <p>Interviewers usually ask for the <strong>worst-case complexity</strong>.</p>
+  </div>
+
+  <h2>6. Example 1: Square Nested Loop</h2>
+  <pre><code>for (int i = 0; i &lt; N; i++)
+{
+    for (int j = 0; j &lt; N; j++)
+    {
+        // constant work
+    }
+}</code></pre>
+  <pre><code>Iterations = N x N
+Answer = O(N^2)</code></pre>
+
+  <h2>7. Example 2: Triangular Nested Loop</h2>
+  <pre><code>for (int i = 0; i &lt; N; i++)
+{
+    for (int j = 0; j &lt;= i; j++)
+    {
+        // work
+    }
+}</code></pre>
+  <p>Iterations:</p>
+  <pre><code>1
+2
+3
+...
+N</code></pre>
+  <p>Total:</p>
+  <pre><code>1 + 2 + 3 + ... + N</code></pre>
+  <p>Formula:</p>
+  <pre><code>N(N + 1) / 2</code></pre>
+  <p>Exact complexity:</p>
+  <pre><code>O((N^2 + N) / 2)</code></pre>
+  <p>After applying the rules:</p>
+  <pre><code>O(N^2)</code></pre>
+
+  <h2>8. Common Time Complexities</h2>
+  <table>
+    <thead>
+      <tr><th>Complexity</th><th>Meaning</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>O(1)</td><td>Constant</td></tr>
+      <tr><td>O(log N)</td><td>Binary Search</td></tr>
+      <tr><td>O(N)</td><td>Single Loop</td></tr>
+      <tr><td>O(N log N)</td><td>Efficient Sorting</td></tr>
+      <tr><td>O(N^2)</td><td>Nested Loops</td></tr>
+      <tr><td>O(N^3)</td><td>Triple Nested Loops</td></tr>
+      <tr><td>O(2^N)</td><td>Recursion / Backtracking</td></tr>
+      <tr><td>O(N!)</td><td>Permutations</td></tr>
+    </tbody>
+  </table>
+
+  <h2>9. Space Complexity</h2>
+  <p>Space complexity is calculated as:</p>
+  <pre><code>Space Complexity = Auxiliary Space + Input Space</code></pre>
+  <table>
+    <thead>
+      <tr><th>Term</th><th>Meaning</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Auxiliary Space</td><td>Extra memory used by the algorithm.</td></tr>
+      <tr><td>Input Space</td><td>Memory required to store the input.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>10. Space Complexity Example</h2>
+  <pre><code>int a, b;
+int c = a + b;</code></pre>
+  <p>Memory used:</p>
+  <pre><code>a
+b
+c</code></pre>
+  <table>
+    <thead>
+      <tr><th>Type</th><th>Variables</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Input Space</td><td><code>a</code>, <code>b</code></td></tr>
+      <tr><td>Auxiliary Space</td><td><code>c</code></td></tr>
+    </tbody>
+  </table>
+  <pre><code>Total Space = O(3) -&gt; O(1)</code></pre>
+  <p>This simplifies to <code>O(1)</code> because it is constant space.</p>
+
+  <h2>11. Arrays and Space</h2>
+  <pre><code>int arr[N];</code></pre>
+  <p>An array of size <code>N</code> is allocated.</p>
+  <pre><code>Space Complexity = O(N)</code></pre>
+
+  <h2>12. Interview Tip: Avoid Modifying Input</h2>
+  <p>Instead of modifying input directly:</p>
+  <pre><code>b = a + b;</code></pre>
+  <p>Prefer storing the result in a new variable:</p>
+  <pre><code>int c = a + b;</code></pre>
+  <div class="notes">
+    <p><strong>Reason:</strong></p>
+    <ul>
+      <li>Original input should remain unchanged.</li>
+      <li>Other parts of the program may rely on it.</li>
+      <li>Modifying inputs is poor practice unless explicitly allowed.</li>
+    </ul>
+  </div>
+
+  <h2>13. Competitive Programming Rule</h2>
+  <p>A common approximation is:</p>
+  <pre><code>10^8 operations ~= 1 second</code></pre>
+  <table>
+    <thead>
+      <tr><th>Time Limit</th><th>Maximum Operations Approx.</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1 sec</td><td>10^8</td></tr>
+      <tr><td>2 sec</td><td>2 x 10^8</td></tr>
+      <tr><td>5 sec</td><td>5 x 10^8</td></tr>
+    </tbody>
+  </table>
+  <p>This helps estimate whether an algorithm will fit within the time limit.</p>
+
+  <h2>Final Interview Cheat Sheet</h2>
+  <table>
+    <thead>
+      <tr><th>Topic</th><th>Final Takeaway</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Time Complexity</td><td>Growth of execution time with input size, not actual runtime.</td></tr>
+      <tr><td>Representation</td><td>Use Big-O notation: <code>O(...)</code>.</td></tr>
+      <tr><td>Rule 1</td><td>Analyze the <strong>worst case</strong>.</td></tr>
+      <tr><td>Rule 2</td><td>Ignore constants: <code>3N -&gt; N</code>.</td></tr>
+      <tr><td>Rule 3</td><td>Ignore lower-order terms: <code>N^2 + N -&gt; N^2</code>.</td></tr>
+      <tr><td>Single Loop</td><td><code>O(N)</code>.</td></tr>
+      <tr><td>Nested Loop</td><td><code>O(N^2)</code>.</td></tr>
+      <tr><td>Triangular Nested Loop</td><td><code>1 + 2 + ... + N = N(N + 1) / 2 -&gt; O(N^2)</code>.</td></tr>
+      <tr><td>Space Complexity</td><td>Input Space + Auxiliary Space.</td></tr>
+      <tr><td>Extra Array</td><td><code>O(N)</code> space.</td></tr>
+      <tr><td>Modify Input?</td><td>Avoid modifying input unless required.</td></tr>
+      <tr><td>CP Rule</td><td><code>10^8</code> operations is approximately <code>1</code> second.</td></tr>
+    </tbody>
+  </table>
+</main>
+</body>
+</html>

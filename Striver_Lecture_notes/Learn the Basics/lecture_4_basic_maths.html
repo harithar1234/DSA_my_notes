@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lecture 4 - Basic Maths</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.55;
+      margin: 0;
+      background: #f6f8fb;
+      color: #1f2937;
+    }
+    main {
+      max-width: 920px;
+      margin: 32px auto;
+      padding: 32px;
+      background: #ffffff;
+      border-radius: 14px;
+      box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
+    }
+    h1 {
+      color: #111827;
+      border-bottom: 3px solid #2563eb;
+      padding-bottom: 10px;
+    }
+    h2 {
+      margin-top: 34px;
+      color: #1d4ed8;
+    }
+    h3 {
+      margin-top: 22px;
+      color: #374151;
+    }
+    pre {
+      background: #0f172a;
+      color: #e5e7eb;
+      padding: 14px 16px;
+      border-radius: 10px;
+      overflow-x: auto;
+    }
+    code {
+      font-family: Consolas, "Courier New", monospace;
+    }
+    :not(pre) > code {
+      background: #eef2ff;
+      color: #1e3a8a;
+      padding: 2px 5px;
+      border-radius: 5px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0 22px;
+      font-size: 0.96rem;
+    }
+    th, td {
+      border: 1px solid #d1d5db;
+      padding: 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: #eff6ff;
+      color: #1e40af;
+    }
+    .intro {
+      background: #eff6ff;
+      border-left: 5px solid #2563eb;
+      padding: 14px 16px;
+      border-radius: 8px;
+    }
+    .notes {
+      background: #f9fafb;
+      border-left: 4px solid #9ca3af;
+      padding: 10px 16px;
+      border-radius: 8px;
+      margin: 16px 0;
+    }
+    .important {
+      background: #fff7ed;
+      border-left: 5px solid #f97316;
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin: 16px 0;
+    }
+    @media print {
+      body { background: #ffffff; }
+      main { box-shadow: none; margin: 0; max-width: none; }
+      h2 { break-after: avoid; }
+      pre, table { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Lecture 4 Final Takeaways: Basic Maths</h1>
+  <p class="intro">This lecture covers basic maths for DSA: digit extraction, count digits, reverse number, palindrome, divisors, prime numbers, and GCD/HCF. The most important concept is <strong>digit extraction</strong>, because it is reused in many problems.</p>
+
+  <h2>1. Extract Digits</h2>
+  <p>To extract the last digit of a number:</p>
+  <pre><code>int lastDigit = n % 10;</code></pre>
+  <p>To remove the last digit:</p>
+  <pre><code>n = n / 10;</code></pre>
+  <h3>Example</h3>
+  <pre><code>n = 7789
+7789 % 10 = 9
+7789 / 10 = 778
+
+778 % 10 = 8
+778 / 10 = 77
+
+77 % 10 = 7
+77 / 10 = 7
+
+7 % 10 = 7
+7 / 10 = 0</code></pre>
+  <p>Digits extracted:</p>
+  <pre><code>9 8 7 7</code></pre>
+  <h3>Code</h3>
+  <pre><code>while (n &gt; 0) {
+    int lastDigit = n % 10;
+    cout &lt;&lt; lastDigit &lt;&lt; " ";
+    n = n / 10;
+}</code></pre>
+  <div class="notes">
+    <p><strong>Time Complexity:</strong> <code>O(log10 N)</code>, because the number is divided by <code>10</code> every time.</p>
+  </div>
+
+  <h2>2. Count Digits</h2>
+  <p>Example:</p>
+  <pre><code>n = 7789
+digits = 4</code></pre>
+  <h3>Formula</h3>
+  <pre><code>int count = (int)(log10(n) + 1);</code></pre>
+  <h3>Example</h3>
+  <pre><code>log10(7789) = 3.89
+3.89 + 1 = 4.89
+int(4.89) = 4</code></pre>
+  <div class="notes">
+    <p><strong>Loop Method:</strong> <code>O(log10 N)</code></p>
+    <p><strong>Formula Method:</strong> <code>O(1)</code></p>
+  </div>
+
+  <h2>3. Reverse a Number</h2>
+  <p>Example:</p>
+  <pre><code>n = 7789
+reverse = 9877</code></pre>
+  <p>Formula:</p>
+  <pre><code>reverseNumber = reverseNumber * 10 + lastDigit;</code></pre>
+  <h3>Dry Run</h3>
+  <pre><code>rev = 0
+
+lastDigit = 9
+rev = 0 * 10 + 9 = 9
+
+lastDigit = 8
+rev = 9 * 10 + 8 = 98
+
+lastDigit = 7
+rev = 98 * 10 + 7 = 987
+
+lastDigit = 7
+rev = 987 * 10 + 7 = 9877</code></pre>
+  <h3>Code</h3>
+  <pre><code>int reverseNumber = 0;
+
+while (n &gt; 0) {
+    int lastDigit = n % 10;
+    reverseNumber = reverseNumber * 10 + lastDigit;
+    n = n / 10;
+}
+
+cout &lt;&lt; reverseNumber;</code></pre>
+  <div class="notes">
+    <p><strong>Time Complexity:</strong> <code>O(log10 N)</code></p>
+  </div>
+
+  <h2>4. Check Palindrome Number</h2>
+  <p>A number is palindrome if its reverse is equal to the original number.</p>
+  <pre><code>121  -&gt; palindrome
+1331 -&gt; palindrome
+123  -&gt; not palindrome</code></pre>
+  <div class="important">
+    <p><strong>Important:</strong> Store the original number before changing <code>n</code>.</p>
+  </div>
+  <h3>Code</h3>
+  <pre><code>int original = n;
+int reverseNumber = 0;
+
+while (n &gt; 0) {
+    int lastDigit = n % 10;
+    reverseNumber = reverseNumber * 10 + lastDigit;
+    n = n / 10;
+}
+
+if (original == reverseNumber) {
+    cout &lt;&lt; "true";
+} else {
+    cout &lt;&lt; "false";
+}</code></pre>
+  <div class="notes">
+    <p><strong>Time Complexity:</strong> <code>O(log10 N)</code></p>
+  </div>
+
+  <h2>5. Print All Divisors: Brute Force</h2>
+  <p>Divisors of <code>36</code>:</p>
+  <pre><code>1 2 3 4 6 9 12 18 36</code></pre>
+  <h3>Code</h3>
+  <pre><code>for (int i = 1; i &lt;= n; i++) {
+    if (n % i == 0) {
+        cout &lt;&lt; i &lt;&lt; " ";
+    }
+}</code></pre>
+  <div class="notes">
+    <p><strong>Time Complexity:</strong> <code>O(N)</code></p>
+  </div>
+
+  <h2>6. Print All Divisors: Optimized</h2>
+  <p>Observation:</p>
+  <pre><code>36 = 1 * 36
+36 = 2 * 18
+36 = 3 * 12
+36 = 4 * 9
+36 = 6 * 6</code></pre>
+  <p>You only need to loop till <code>sqrt(n)</code>. Use <code>i * i &lt;= n</code> to avoid repeatedly calling <code>sqrt(n)</code>.</p>
+  <h3>Code</h3>
+  <pre><code>vector&lt;int&gt; divisors;
+
+for (int i = 1; i * i &lt;= n; i++) {
+    if (n % i == 0) {
+        divisors.push_back(i);
+
+        if (n / i != i) {
+            divisors.push_back(n / i);
+        }
+    }
+}
+
+sort(divisors.begin(), divisors.end());
+
+for (auto it : divisors) {
+    cout &lt;&lt; it &lt;&lt; " ";
+}</code></pre>
+  <p>For <code>n = 36</code>, output:</p>
+  <pre><code>1 2 3 4 6 9 12 18 36</code></pre>
+  <div class="notes">
+    <p><strong>Time Complexity:</strong> <code>O(sqrt(N)) + O(number_of_factors log number_of_factors)</code></p>
+  </div>
+
+  <h2>7. Prime Number</h2>
+  <p>Correct definition:</p>
+  <pre><code>A prime number has exactly 2 factors: 1 and itself.</code></pre>
+  <p>Examples:</p>
+  <pre><code>11 -&gt; prime: 1, 11
+13 -&gt; prime: 1, 13
+4  -&gt; not prime: 1, 2, 4
+1  -&gt; not prime</code></pre>
+  <h3>Brute Force Code</h3>
+  <pre><code>int count = 0;
+
+for (int i = 1; i &lt;= n; i++) {
+    if (n % i == 0) {
+        count++;
+    }
+}
+
+if (count == 2) {
+    cout &lt;&lt; "Prime";
+} else {
+    cout &lt;&lt; "Not Prime";
+}</code></pre>
+  <p><strong>Time Complexity:</strong> <code>O(N)</code></p>
+  <h3>Optimized Code</h3>
+  <pre><code>int count = 0;
+
+for (int i = 1; i * i &lt;= n; i++) {
+    if (n % i == 0) {
+        count++;
+
+        if (n / i != i) {
+            count++;
+        }
+    }
+}
+
+if (count == 2) {
+    cout &lt;&lt; "Prime";
+} else {
+    cout &lt;&lt; "Not Prime";
+}</code></pre>
+  <div class="notes">
+    <p><strong>Time Complexity:</strong> <code>O(sqrt(N))</code></p>
+  </div>
+
+  <h2>8. GCD / HCF</h2>
+  <p><strong>GCD</strong> means Greatest Common Divisor. <strong>HCF</strong> means Highest Common Factor.</p>
+  <h3>Example</h3>
+  <pre><code>n1 = 9
+n2 = 12
+
+Factors of 9  = 1, 3, 9
+Factors of 12 = 1, 2, 3, 4, 6, 12
+
+Common factors = 1, 3
+GCD = 3</code></pre>
+  <p>More examples:</p>
+  <pre><code>GCD(11, 13) = 1
+GCD(20, 40) = 20</code></pre>
+  <h3>Brute Force Code</h3>
+  <pre><code>int gcd = 1;
+
+for (int i = 1; i &lt;= min(n1, n2); i++) {
+    if (n1 % i == 0 &amp;&amp; n2 % i == 0) {
+        gcd = i;
+    }
+}
+
+cout &lt;&lt; gcd;</code></pre>
+  <p><strong>Time Complexity:</strong> <code>O(min(n1, n2))</code></p>
+  <h3>Better Brute Force From Back Side</h3>
+  <pre><code>for (int i = min(n1, n2); i &gt;= 1; i--) {
+    if (n1 % i == 0 &amp;&amp; n2 % i == 0) {
+        cout &lt;&lt; i;
+        break;
+    }
+}</code></pre>
+  <p>Worst-case time complexity is still <code>O(min(n1, n2))</code>.</p>
+
+  <h2>9. Euclidean Algorithm for GCD</h2>
+  <p>Main formula:</p>
+  <pre><code>gcd(a, b) = gcd(a % b, b)</code></pre>
+  <p>Keep reducing until one number becomes <code>0</code>.</p>
+  <h3>Example</h3>
+  <pre><code>gcd(52, 10)
+
+52 % 10 = 2
+gcd(2, 10)
+
+10 % 2 = 0
+gcd(2, 0)
+
+Answer = 2</code></pre>
+  <h3>Code</h3>
+  <pre><code>while (a &gt; 0 &amp;&amp; b &gt; 0) {
+    if (a &gt; b) {
+        a = a % b;
+    } else {
+        b = b % a;
+    }
+}
+
+if (a == 0) {
+    cout &lt;&lt; b;
+} else {
+    cout &lt;&lt; a;
+}</code></pre>
+  <div class="notes">
+    <p><strong>Time Complexity:</strong> <code>O(log(min(a, b)))</code></p>
+  </div>
+
+  <h2>Final Things To Know</h2>
+  <table>
+    <thead>
+      <tr><th>Topic</th><th>Final Takeaway</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Digit Extraction</td><td><code>n % 10</code> gives last digit, <code>n / 10</code> removes last digit.</td></tr>
+      <tr><td>Count Digits</td><td>Count how many times <code>n</code> can be divided by <code>10</code>.</td></tr>
+      <tr><td>Reverse Number</td><td><code>rev = rev * 10 + lastDigit</code>.</td></tr>
+      <tr><td>Palindrome</td><td>Reverse the number and compare with original.</td></tr>
+      <tr><td>Divisors</td><td>Brute force from <code>1</code> to <code>N</code>.</td></tr>
+      <tr><td>Optimized Divisors</td><td>Loop till <code>sqrt(N)</code> using <code>i * i &lt;= n</code>.</td></tr>
+      <tr><td>Prime Number</td><td>Number with exactly 2 factors.</td></tr>
+      <tr><td>Optimized Prime Check</td><td>Count factors only till <code>sqrt(N)</code>.</td></tr>
+      <tr><td>GCD / HCF</td><td>Greatest number that divides both numbers.</td></tr>
+      <tr><td>Euclidean Algorithm</td><td>Use modulo repeatedly until one number becomes <code>0</code>.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Most Important Pattern</h2>
+  <pre><code>while (n &gt; 0) {
+    int lastDigit = n % 10;
+
+    // use lastDigit here
+
+    n = n / 10;
+}</code></pre>
+  <p>This single pattern helps solve many basic maths problems in DSA.</p>
+</main>
+</body>
+</html>
